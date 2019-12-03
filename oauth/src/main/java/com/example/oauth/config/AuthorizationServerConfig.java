@@ -1,6 +1,7 @@
 package com.example.oauth.config;
 
 import com.example.oauth.service.MyClientDetailsService;
+import com.example.oauth.service.MyUserDetailsService;
 import java.security.KeyPair;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,9 +18,13 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.DefaultUserAuthenticationConverter;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 @Configuration
@@ -30,6 +35,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
   private AuthenticationManager authenticationManager;
   @Autowired
   private MyClientDetailsService clientDetailsService;
+  @Autowired
+  private MyUserDetailsService userDetailsService;
 
   @Override
   public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -59,10 +66,22 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
   }
 
   @Bean
+  public TokenStore tokenStore() {
+    return new JwtTokenStore(jwtAccessTokenConverter());
+  }
+
+  @Bean
   public JwtAccessTokenConverter jwtAccessTokenConverter() {
     JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
     KeyPair keyPair = new KeyStoreKeyFactory(new ClassPathResource("keystore.jks"), "mypass".toCharArray()).getKeyPair("mytest");
     converter.setKeyPair(keyPair);
+
+    DefaultAccessTokenConverter accessTokenConverter = new DefaultAccessTokenConverter();
+    DefaultUserAuthenticationConverter userAuthenticationConverter = new DefaultUserAuthenticationConverter();
+    userAuthenticationConverter.setUserDetailsService(userDetailsService);
+    accessTokenConverter.setUserTokenConverter(userAuthenticationConverter);
+
+    converter.setAccessTokenConverter(accessTokenConverter);
     return converter;
   }
 

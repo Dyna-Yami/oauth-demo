@@ -20,6 +20,8 @@ public class MyUserDetailsService implements UserDetailsService {
 
     Set<SimpleAuthority> authorities = new HashSet<>();
     authorities.add(new SimpleAuthority("order"));
-    return new SimpleUser(username, "password1", authorities);
+    SimpleUser user = new SimpleUser(username, "password1", authorities);
+    user.setOtherInfo("abcdefg");
+    return user;
   }
 }

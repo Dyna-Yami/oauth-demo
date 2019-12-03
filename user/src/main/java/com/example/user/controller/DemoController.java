@@ -30,8 +30,6 @@ public class DemoController {
     log.info("Authentication = {}", authentication);
     log.info("Principal = {}", authentication.getPrincipal());
     log.info("Authorities = {}", authentication.getAuthorities());
-    String principal = authService.me();
-    log.info("Full Principal = {}", principal);
     return orderService.getSampleString("Jamin");
   }
 }
