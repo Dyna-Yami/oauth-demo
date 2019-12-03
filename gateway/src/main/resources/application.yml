@@ -1,0 +1,17 @@
+security:
+  oauth2:
+    client:
+      access-token-uri: http://localhost:9902/oauth/token
+      user-authorization-uri: http://localhost:9902/oauth/authorize
+    resource:
+      jwt:
+        key-uri: http://localhost:9902/oauth/token_key
+zuul:
+  ignored-services: '*'
+  routes:
+    user:
+      serviceId: user
+      path: /user/**
+    order:
+      serviceId: order
+      path: /order/**

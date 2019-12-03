@@ -1,0 +1,13 @@
+server:
+  port: 9903
+
+spring:
+  application:
+    name: gateway
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:9901/eureka/
