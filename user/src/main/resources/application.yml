@@ -1,5 +1,0 @@
-security:
-  oauth2:
-    resource:
-      jwt:
-        key-uri: http://localhost:9902/oauth/token_key

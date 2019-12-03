@@ -12,6 +12,8 @@ zuul:
     user:
       serviceId: user
       path: /user/**
+      sensitiveHeaders: Cookie,Set-Cookie
     order:
       serviceId: order
       path: /order/**
+      sensitiveHeaders: Cookie,Set-Cookie

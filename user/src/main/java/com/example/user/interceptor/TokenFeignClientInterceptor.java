@@ -12,7 +12,6 @@ public class TokenFeignClientInterceptor implements RequestInterceptor {
 
   private static final String AUTHORIZATION = "Authorization";
   private static final String BEARER = "bearer";
-  private static final String ACCESS_TOKEN = "access_token";
 
   @Override
   public void apply(RequestTemplate requestTemplate) {
@@ -20,8 +19,7 @@ public class TokenFeignClientInterceptor implements RequestInterceptor {
     if (authentication != null && authentication.getDetails() instanceof OAuth2AuthenticationDetails) {
       OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
       log.info("token = {}", details.getTokenValue());
-//      requestTemplate.header(AUTHORIZATION, "%s %s", BEARER, details.getTokenValue());
-      requestTemplate.query(ACCESS_TOKEN, details.getTokenValue());
+      requestTemplate.header(AUTHORIZATION, String.format("%s %s", BEARER, details.getTokenValue()));
     }
   }
 }

@@ -44,7 +44,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     clients.inMemory()
         .withClient("client")
         .secret("secret")
-        .autoApprove("server")
+        .autoApprove(true)
         .authorizedGrantTypes("refresh_token", "authorization_code", "password")
         .redirectUris("http://localhost:9903/callback")
         .scopes("server");
