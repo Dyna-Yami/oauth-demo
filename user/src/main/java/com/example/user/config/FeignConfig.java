@@ -1,5 +1,7 @@
 package com.example.user.config;
 
+import com.example.user.interceptor.TokenFeignClientInterceptor;
+import feign.RequestInterceptor;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,5 +14,10 @@ public class FeignConfig {
   @LoadBalanced
   public RestTemplate restTemplate() {
     return new RestTemplate();
+  }
+
+  @Bean
+  public RequestInterceptor tokenFeignClientInterceptor() {
+    return new TokenFeignClientInterceptor();
   }
 }
