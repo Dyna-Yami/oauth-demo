@@ -1,6 +1,8 @@
-package com.example.user.config;
+package com.example.common.jwt.config;
 
 import java.io.IOException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -10,8 +12,12 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.util.FileCopyUtils;
 
+@EnableConfigurationProperties({JwtConfigurationProperties.class})
 @Configuration
-public class JwtConfig {
+public class JwtClientConfig {
+
+  @Autowired
+  private JwtConfigurationProperties properties;
 
   @Bean
   public TokenStore tokenStore() {
@@ -21,7 +27,7 @@ public class JwtConfig {
   @Bean
   protected JwtAccessTokenConverter jwtAccessTokenConverter() {
     JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-    Resource resource = new ClassPathResource("public.cert");
+    Resource resource = new ClassPathResource(properties.getPublicKeyPath());
     String publicKey;
     try {
       publicKey = new String(FileCopyUtils.copyToByteArray(resource.getInputStream()));

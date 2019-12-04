@@ -25,6 +25,7 @@
 		<module>user</module>
     <module>oauth</module>
     <module>order</module>
+    <module>common</module>
   </modules>
 
 	<dependencies>
