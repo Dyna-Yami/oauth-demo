@@ -46,7 +46,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         .autoApprove(true)
         .authorizedGrantTypes("refresh_token", "authorization_code", "password")
         .redirectUris("http://localhost:9903/callback")
-        .scopes("server");
+        .scopes("server")
+        .accessTokenValiditySeconds(60 * 60)
+        .refreshTokenValiditySeconds(60 * 60 * 24);
   }
 
   @Override
