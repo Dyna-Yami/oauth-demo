@@ -16,17 +16,19 @@ public class MyClientDetailsService implements ClientDetailsService {
     if (!"client".equals(clientId)) {
       return null;
     }
-    BaseClientDetails client = new BaseClientDetails(clientId,
+    BaseClientDetails client = new BaseClientDetails("client",
         null,
         "server",
+        "refresh_token,authorization_code,password",
         null,
-        null,
-        "http://localhost:9903"
+        "http://localhost:9903/callback"
     );
     Set<String> scopes = new HashSet<>();
-    scopes.add("server");
+    scopes.add("auto");
     client.setAutoApproveScopes(scopes);
     client.setClientSecret("secret");
+    client.setAccessTokenValiditySeconds(60 * 60);
+    client.setRefreshTokenValiditySeconds(60 * 60 * 24);
     return client;
   }
 }

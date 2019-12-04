@@ -39,16 +39,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
   @Override
   public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-//    clients.withClientDetails(clientDetailsService);
-    clients.inMemory()
-        .withClient("client")
-        .secret("secret")
-        .autoApprove(true)
-        .authorizedGrantTypes("refresh_token", "authorization_code", "password")
-        .redirectUris("http://localhost:9903/callback")
-        .scopes("server")
-        .accessTokenValiditySeconds(60 * 60)
-        .refreshTokenValiditySeconds(60 * 60 * 24);
+    clients.withClientDetails(clientDetailsService);
   }
 
   @Override
@@ -57,6 +48,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     enhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), jwtAccessTokenConverter()));
 
     endpoints.authenticationManager(authenticationManager)
+        .userDetailsService(userDetailsService)
         .accessTokenConverter(jwtAccessTokenConverter())
         .tokenEnhancer(enhancerChain);
   }
